@@ -13,14 +13,34 @@ class ContactUpdater:
 
     def get_novos_contatos(self):
         """
-        Obtém os contatos novos da planilha updated a começar pelo último
-        contato igual que há em ambas as planilhas
+        Encontra o ID da segunda linha da planilha contacts.csv e pega todos os
+        contatos acima desse ID na updated.csv.
         """
-        return self.df_updated[
-            ~self.df_updated.iloc[:, 0].isin(self.df_contacts.iloc[:, 0])]
+        if len(self.df_contacts) < 2:
+            return pd.DataFrame()
+
+        line2_id = self.df_contacts.iloc[1, 0]
+
+        try:
+            idx = self.df_updated[
+                self.df_updated.iloc[:, 0] == line2_id].index[0]
+        except IndexError:
+            return pd.DataFrame()
+
+        return self.df_updated.iloc[:idx]
 
     def atualizar_contatos(self, novos_contatos):
         """Atualiza contacts com os contatos novos"""
-        df_final = pd.concat(
-            [self.df_contacts, novos_contatos], ignore_index=True)
+        line2_id = self.df_contacts.iloc[1, 0]
+
+        try:
+            idx_in_contacts = self.df_contacts[
+                self.df_contacts.iloc[:, 0] == line2_id].index[0]
+        except IndexError:
+            idx_in_contacts = 1
+
+        before = self.df_contacts.iloc[:idx_in_contacts]
+        after = self.df_contacts.iloc[idx_in_contacts:]
+
+        df_final = pd.concat([before, novos_contatos, after], ignore_index=True)
         df_final.to_csv(self.contacts_path, index=False)
