@@ -42,5 +42,6 @@ class ContactUpdater:
         before = self.df_contacts.iloc[:idx_in_contacts]
         after = self.df_contacts.iloc[idx_in_contacts:]
 
-        df_final = pd.concat([before, novos_contatos, after], ignore_index=True)
+        df_final = pd.concat(
+            [before, novos_contatos, after], ignore_index=True)
         df_final.to_csv(self.contacts_path, index=False)

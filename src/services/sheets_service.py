@@ -14,13 +14,13 @@ class SheetsService:
             worksheet_name
         )
 
-    def append_numbers_and_dates(self, numeros, datas):
+    def append_numbers_and_dates(self, number, dates, campaign):
         """
-        Adiciona o número de telefone e a data de contato à planilha do
+        Adiciona o número de telefone, a data e a campanha à planilha do
         Google Sheets
         """
         start_row = len(self.worksheet.col_values(1)) + 1
-        valores = list(zip(numeros, datas))
+        valores = list(zip(number, dates, campaign))
         end_row = start_row + len(valores) - 1
-        cell_range = f'A{start_row}:B{end_row}'
+        cell_range = f'A{start_row}:C{end_row}'
         self.worksheet.update(cell_range, valores)

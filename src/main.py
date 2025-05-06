@@ -34,6 +34,7 @@ else:
     updater.atualizar_contatos(novos_contatos)
     sheets.append_numbers_and_dates(
         novos_contatos.iloc[:, 1].astype(str).tolist(),
-        novos_contatos.iloc[:, 5].astype(str).tolist()
+        novos_contatos.iloc[:, 5].astype(str).tolist(),
+        novos_contatos.iloc[:, 17].astype(str).tolist()
     )
     print(f"{len(novos_contatos)} novas linhas adicionadas e sincronizadas.")
